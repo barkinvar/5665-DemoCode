@@ -46,7 +46,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
   private boolean m_hasAppliedOperatorPerspective = false;
 
   private final SwerveRequest.FieldCentric teleopDriveRequest =
-      new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+      new SwerveRequest.FieldCentric()
+          .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
+          .withDeadband(0.03 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond))
+          .withRotationalDeadband(0.03 * Math.PI * 2);
 
   /** Swerve request to apply during robot-centric path following */
   private final SwerveRequest.ApplyRobotSpeeds m_pathApplyRobotSpeeds =

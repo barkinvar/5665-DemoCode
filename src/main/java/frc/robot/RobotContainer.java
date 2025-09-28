@@ -7,15 +7,19 @@ package frc.robot;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.elevator.ElevatorSubsystem;
+import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorTarget;
+import frc.robot.subsystems.funnel.FunnelSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,8 +32,13 @@ public class RobotContainer {
   private final SendableChooser<Command> autoChooser;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final PS5Controller m_driverController =
-      new PS5Controller(OperatorConstants.kDriverControllerPort);
+  private final CommandPS5Controller m_driverController =
+      new CommandPS5Controller(OperatorConstants.kDriverControllerPort);
+
+  public final ElevatorSubsystem mElevator = new ElevatorSubsystem();
+  public final FunnelSubsystem mFunnel = new FunnelSubsystem();
+
+  public final Superstructure mSuperstructure = new Superstructure(mElevator, mFunnel);
 
   private final CommandSwerveDrivetrain swerveDrivetrain = TunerConstants.createDrivetrain();
   private final Telemetry telemetry =
@@ -60,6 +69,20 @@ public class RobotContainer {
             () -> -m_driverController.getLeftY(),
             () -> -m_driverController.getLeftX(),
             () -> -m_driverController.getRightX()));
+
+    m_driverController.R2().whileTrue(mFunnel.runHopperAtVoltageWithSensor(3.5));
+
+    //m_driverController.cross().onTrue(mSuperstructure.scoreToReef(ElevatorTarget.L1));
+    // m_driverController.circle().onTrue(mSuperstructure.scoreToReef(ElevatorTarget.L2));
+    // m_driverController.square().onTrue(mSuperstructure.scoreToReef(ElevatorTarget.L3));
+    // m_driverController.triangle().onTrue(mSuperstructure.scoreToReef(ElevatorTarget.L4));
+
+    m_driverController.cross().onFalse(mElevator.setForgetSetpointCommand(ElevatorTarget.HOME));
+    m_driverController.circle().onFalse(mElevator.setForgetSetpointCommand(ElevatorTarget.HOME));
+    m_driverController.square().onFalse(mElevator.setForgetSetpointCommand(ElevatorTarget.HOME));
+    m_driverController.triangle().onFalse(mElevator.setForgetSetpointCommand(ElevatorTarget.HOME));
+
+    
   }
 
   public Command getAutonomousCommand() {

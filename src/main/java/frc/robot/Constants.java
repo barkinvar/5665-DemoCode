@@ -64,16 +64,17 @@ public final class Constants {
   }
 
   public static class ElevatorConstans {
-    public static final int kLeftMotorID = 0;
-    public static final int kRightMotorID = 1;
+    public static final int kLeftMotorID = 15;
+    public static final int kRightMotorID = 12;
 
-    public static final double kRatio = 10.0; // TODO
+    public static final double kRatio = 5.0; // TODO
 
     public static final double kP = 0.0;
     public static final double kD = 0.0;
 
-    public static final double currentLimit = 10.0;
+    public static final double currentLimit = 120.0;
 
     public static final double kTolerance = 2.0; // TODO
+    public static final double pitchDiameter = 152.4 * 2;
   }
 }
