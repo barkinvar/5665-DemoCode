@@ -72,10 +72,10 @@ public class RobotContainer {
 
     m_driverController.R2().whileTrue(mFunnel.runHopperAtVoltageWithSensor(3.5));
 
-    //m_driverController.cross().onTrue(mSuperstructure.scoreToReef(ElevatorTarget.L1));
-    // m_driverController.circle().onTrue(mSuperstructure.scoreToReef(ElevatorTarget.L2));
-    // m_driverController.square().onTrue(mSuperstructure.scoreToReef(ElevatorTarget.L3));
-    // m_driverController.triangle().onTrue(mSuperstructure.scoreToReef(ElevatorTarget.L4));
+    m_driverController.cross().onTrue(mSuperstructure.scoreToReef(ElevatorTarget.L1, m_driverController.L2()::getAsBoolean));
+    m_driverController.circle().onTrue(mSuperstructure.scoreToReef(ElevatorTarget.L2, m_driverController.L2()::getAsBoolean));
+    m_driverController.square().onTrue(mSuperstructure.scoreToReef(ElevatorTarget.L3, m_driverController.L2()::getAsBoolean));
+    m_driverController.triangle().onTrue(mSuperstructure.scoreToReef(ElevatorTarget.L4, m_driverController.L2()::getAsBoolean));
 
     m_driverController.cross().onFalse(mElevator.setForgetSetpointCommand(ElevatorTarget.HOME));
     m_driverController.circle().onFalse(mElevator.setForgetSetpointCommand(ElevatorTarget.HOME));

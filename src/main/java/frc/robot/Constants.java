@@ -74,7 +74,7 @@ public final class Constants {
 
     public static final double currentLimit = 120.0;
 
-    public static final double kTolerance = 2.0; // TODO
+    public static final double kTolerance = 8.0; // TODO
     public static final double pitchDiameter = 152.4 * 2;
   }
 }
