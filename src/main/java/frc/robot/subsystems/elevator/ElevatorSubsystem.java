@@ -27,6 +27,7 @@ import com.ctre.phoenix6.signals.UpdateModeValue;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstans;
 
@@ -48,7 +49,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   private void configureMotors() {
     TalonFXConfiguration leftConfig =
         new TalonFXConfiguration()
-            .withSlot0(new Slot0Configs().withKS(0.8).withKG(0.6).withKP(12.0).withKD(0.1))
+            .withSlot0(new Slot0Configs().withKS(0.4).withKG(0.6).withKP(25.0).withKD(0.1))
             .withCurrentLimits(
                 new CurrentLimitsConfigs()
                     .withStatorCurrentLimit(ElevatorConstans.currentLimit)
@@ -90,9 +91,12 @@ public class ElevatorSubsystem extends SubsystemBase {
     STOP(0.0),
     HOME(10.0),
     L1(300.0),
-    L2(500.0),
-    L3(900.0),
-    L4(1450.0);
+    L2(565.0),
+    L3(955.0),
+    L4(1450.0),
+    VOLTAGE(3.0),
+    HIGH_GONDIK(1155.0),
+    LOW_GONDIK(815.0);
 
     private final double height;
 
@@ -146,6 +150,9 @@ public class ElevatorSubsystem extends SubsystemBase {
       else {
         mMotorLeft.set(0.0);
       }
+        break;
+      case VOLTAGE:
+        mMotorLeft.setVoltage(3.0);
         break;
       default:
         mMotorLeft.setControl(mPositionRequest.withPosition(setpoint.getHeight() / ElevatorConstans.pitchDiameter));

@@ -44,6 +44,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
   private static final Rotation2d kRedAlliancePerspectiveRotation = Rotation2d.k180deg;
   /* Keep track if we've ever applied the operator perspective before or not */
   private boolean m_hasAppliedOperatorPerspective = false;
+  private Alliance mAlliance = Alliance.Red;
+
 
   private final SwerveRequest.FieldCentric teleopDriveRequest =
       new SwerveRequest.FieldCentric()
@@ -283,6 +285,19 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
               });
     }
+
+    DriverStation.getAlliance()
+    .ifPresent(
+        allianceColor -> {
+          if (mAlliance != allianceColor) {
+            setOperatorPerspectiveForward(
+                allianceColor == Alliance.Red
+                    ? kRedAlliancePerspectiveRotation
+                    : kBlueAlliancePerspectiveRotation);
+
+            mAlliance = allianceColor;
+          }
+        });
   }
 
   private void startSimThread() {
@@ -312,6 +327,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
   @Override
   public void addVisionMeasurement(Pose2d visionRobotPoseMeters, double timestampSeconds) {
     super.addVisionMeasurement(visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds));
+  }
+
+  public Alliance getAlliance() {
+    return mAlliance;
   }
 
   /**

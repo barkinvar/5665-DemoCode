@@ -79,6 +79,10 @@ public class FunnelSubsystem extends SubsystemBase {
   public Command shoot(double voltage){
     return runEnd(() -> setVoltage(voltage), () -> setVoltage(0.0)).until(() -> !getSensorState()).unless(() -> !getSensorState());
   }
+
+  public Command setVoltageCommand(double voltage){
+    return runEnd(() -> setVoltage(voltage), () -> setVoltage(0.0));
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

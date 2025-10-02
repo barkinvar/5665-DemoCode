@@ -21,6 +21,4 @@ public class Superstructure {
     public Command scoreToReef(ElevatorTarget scoreHeight, BooleanSupplier trigger) {
         return (mElevator.runToSetpoint(scoreHeight).andThen(Commands.waitUntil(trigger), mFunnel.shoot(3.5).withTimeout(0.25), mElevator.setForgetSetpointCommand(ElevatorTarget.HOME))).unless(() -> !mFunnel.getSensorState());
     }
-
-
 }
